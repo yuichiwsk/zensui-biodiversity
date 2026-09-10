@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>全国水生生物調査から、日本の川の生物多様性の変化を明らかにする</title>
+  <meta name="description" content="全国水生生物調査を用いた河川の生物多様性指標のトレンド推定及びその駆動要因の探索" />
+  <style>
+    :root {
+      --bg: #f6f8f7;
+      --paper: #ffffff;
+      --text: #1f2a26;
+      --muted: #5f6f68;
+      --accent: #2f6f58;
+      --accent-soft: #e7f0ec;
+      --line: #dfe7e3;
+      --max: 1080px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.8;
+    }
+
+    a { color: var(--accent); }
+    img { max-width: 100%; height: auto; }
+
+    .hero {
+      background: linear-gradient(180deg, #eef5f1 0%, #f6f8f7 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      padding: 72px 0 56px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin-top: 24px;
+      font-size: 1.16rem;
+      color: var(--muted);
+    }
+
+    .meta {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    nav {
+      background: rgba(255,255,255,0.95);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+    }
+
+    nav .wrap {
+      display: flex;
+      gap: 22px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 12px 0;
+      font-size: 0.94rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    main { padding: 36px 0 72px; }
+
+    section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: clamp(24px, 4vw, 44px);
+      margin: 24px 0;
+      box-shadow: 0 8px 24px rgba(21, 45, 36, 0.04);
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(1.45rem, 2.5vw, 2rem);
+      line-height: 1.35;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+
+    p { margin: 0.7em 0; }
+
+    .grid-3,
+    .members,
+    .photo-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .members { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fbfcfb;
+    }
+
+    .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .figure {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .figure img {
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+
+    .figure figcaption {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .callout {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 20px 22px;
+      border-radius: 12px;
+    }
+
+    .member-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .member-affil {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .placeholder {
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #aab8b1;
+      border-radius: 14px;
+      background: #f8faf9;
+      color: #718078;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    footer {
+      padding: 36px 0 56px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 820px) {
+      .grid-3, .members, .photo-grid { grid-template-columns: 1fr; }
+      .hero-inner { padding-top: 52px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <div class="eyebrow">環境研究総合推進費 研究プロジェクト</div>
+      <h1>全国水生生物調査から、<br>日本の川の生物多様性の変化を明らかにする</h1>
+      <p class="lead">
+        全国各地で約40年間続けられてきた市民参加型の「全国水生生物調査」。
+        本研究では、この長期データを活用して、河川の生物多様性がどのように変化してきたのか、
+        そしてその変化を駆動する環境要因は何かを明らかにすることを目指します。
+      </p>
+      <div class="meta">
+        <span>研究期間：2026–2028年度</span>
+        <span>研究代表：竹下 和貴（東洋大学）</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="wrap">
+      <a href="#about">研究について</a>
+      <a href="#approach">研究の進め方</a>
+      <a href="#figure">全体概要</a>
+      <a href="#cooperation">調査協力のお願い</a>
+      <a href="#members">研究メンバー</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="about">
+      <h2>この研究について</h2>
+      <p>
+        「全国水生生物調査」は、全国の河川で市民が水生生物を観察・記録する調査です。
+        長年にわたり、多数の地点、とくに専門家調査では十分にカバーしにくい小規模河川も含めて、
+        全国規模の生物情報が蓄積されてきました。
+      </p>
+      <p>
+        一方、市民による簡易調査であるため、そのデータをどのように生物多様性の評価へつなげるかには課題があります。
+        そこで本研究では、市民調査と専門家調査の結果を対応づけながら、全国水生生物調査から算出できる新たな生物多様性指標を検討します。
+      </p>
+      <p>
+        さらに、その指標を用いて全国の河川における長期的な増減トレンドを推定し、
+        土地利用などの環境条件との関係を解析することで、河川生態系の保全・修復に役立つ知見を得ることを目指します。
+      </p>
+    </section>
+
+    <section id="approach">
+      <h2>研究の進め方</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="step-no">1</div>
+          <h3>生物多様性指標をつくる</h3>
+          <p>全国水生生物調査で記録される普通種の在・不在情報をもとに、市民科学のデータから算出可能な生物多様性指標を探索します。</p>
+        </div>
+        <div class="card">
+          <div class="step-no">2</div>
+          <h3>専門家調査と比較する</h3>
+          <p>同一地点または近傍で行われた専門家による調査と比較し、市民調査から得られる指標が河川の生物多様性をどの程度反映するかを検証します。</p>
+        </div>
+        <div class="card">
+          <div class="step-no">3</div>
+          <h3>全国の長期トレンドを推定する</h3>
+          <p>約40年間のデータを用いて、河川ごとの増加・減少トレンドを推定し、それらを駆動する環境要因を探索します。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="figure">
+      <h2>研究の全体概要</h2>
+      <p class="small">研究の全体像を示した概念図です。</p>
+      <figure class="figure">
+        <img src="assets/project-overview.png" alt="研究プロジェクトの全体概要図" />
+        <figcaption>全国水生生物調査データと専門家調査を組み合わせ、生物多様性指標の導出、長期トレンドの推定、駆動要因の評価を行います。</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>現地調査</h2>
+      <p>
+        全国水生生物調査と専門家による調査結果を比較するため、各地の河川で現地調査を行います。
+        本流・支流、小規模河川など、さまざまな河川環境を対象に調査を進める予定です。
+      </p>
+      <div class="photo-grid">
+        <div class="placeholder">調査写真 1<br><span class="small">河川での採集風景など</span></div>
+        <div class="placeholder">調査写真 2<br><span class="small">水生昆虫・底生動物など</span></div>
+        <div class="placeholder">調査写真 3<br><span class="small">調査地点・河川景観など</span></div>
+      </div>
+    </section>
+
+    <section id="cooperation">
+      <h2>全国水生生物調査を実施されている皆さまへ</h2>
+      <div class="callout">
+        <p>
+          本研究では、全国水生生物調査の結果と専門家による調査結果との関係を検証するため、
+          全国各地で河川の生物調査を行う予定です。
+        </p>
+        <p>
+          全国水生生物調査を実施されている団体の皆さまの調査に同行させていただき、
+          同じ場所で私たちも調査を実施できればと考えています。
+          ご協力いただける団体、ご関心をお持ちの方は、ぜひ研究メンバーまでご連絡ください。
+        </p>
+      </div>
+    </section>
+
+    <section id="members">
+      <h2>研究メンバー</h2>
+      <div class="members">
+        <div class="card">
+          <div class="member-name">竹下 和貴</div>
+          <div class="member-affil">東洋大学 准教授</div>
+          <p class="small">研究代表者</p>
+        </div>
+        <div class="card">
+          <div class="member-name">小林 勇太</div>
+          <div class="member-affil">東京農工大学 助教</div>
+        </div>
+        <div class="card">
+          <div class="member-name">岩崎 雄一</div>
+          <div class="member-affil">産業技術総合研究所 上級主任研究員</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>お問い合わせ</h2>
+      <p>
+        調査へのご協力、研究内容に関するお問い合わせは、研究メンバーまでお願いいたします。
+      </p>
+      <p class="small">※ここに代表者またはプロジェクト用メールアドレスを掲載してください。</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      全国水生生物調査を用いた河川の生物多様性指標のトレンド推定及びその駆動要因の探索<br>
+      Environment Research and Technology Development Fund project, 2026–2028
+    </div>
+  </footer>
+</body>
+</html>
